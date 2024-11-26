@@ -113,7 +113,7 @@ class PetServiceTest {
         images.add(processImage(Path.of("src/test/java/oz/rest/services/test-materials/dog.png")));
         Pet p = generatePet("Mollie", "Mollie3245", images, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
         Response r = petService.add(p);
-        assertEquals(r.getStatus(), 200);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
@@ -122,19 +122,27 @@ class PetServiceTest {
         images.add(processImage(Path.of("src/test/java/oz/rest/services/test-materials/dog.png")));
         Pet p = generatePet("Mollie", "Mollie3245", images, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
         Response r = petService.add(p);
-        assertEquals(r.getStatus(), 200);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void tcb1_3(){
         Pet p = generatePet("Cloudy", "Cloudy2024", null, "Bird", "Lovebird", "green", "", 1, "Male", "small", "too loud", "Cloudy is awesome. He loves cuddles, he loves being around people and he is so social. I really hope he finds a new home because all his friends have left and its just so sad. To tell you more about Cloudy, he loves to eat. He is green but has a red head. He is very pretty and elegant looking. He is also not exactly a year old, he is only 4 months old and he was actually born here. I love Cloudy and I will miss him so much. Please pick him and take good care of him. He is a really good guy and this will be the best purchase of your life.");
         Response r = petService.add(p);
-        assertEquals(r.getStatus(), 400);
+        assertEquals(400, r.getStatus());
     }
     @Test
     void tcb1_4(){
         Pet p = generatePet("", "", null, "", "", "", "", null, "", "", "", "");
         Response r = petService.add(p);
-        assertEquals(r.getStatus(), 400);
+        assertEquals(400, r.getStatus());
+    }
+
+    @Test
+    void tcb1_5(){
+        Pet p = generatePet("Kritika", null, null, null, null, null, null, null, null, null, null, null);
+        // no functionality to add email address without modifying source code.
+        Response r = petService.add(p);
+        assertEquals(400, r.getStatus());
     }
 }
