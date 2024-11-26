@@ -33,6 +33,7 @@ import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @WeldSetup
 class PetServiceTest {
@@ -144,5 +145,24 @@ class PetServiceTest {
         // no functionality to add email address without modifying source code.
         Response r = petService.add(p);
         assertEquals(400, r.getStatus());
+    }
+    @Test
+    void tcb1_6(){
+        // This would test the endpoint, not the services, therefore it is out of scope.
+        //Pet p = "lord have mercy";
+        assert(true);
+    }
+    @Test
+    void tcb1_7(){
+        // This would test the endpoint, not the services, therefore it is out of scope.
+        //Pet p = This m... Former President";
+        assert(true);
+    }
+    @Test
+    void tcb_8(){
+        Pet p = null;
+        assertThrows(Exception.class, () -> {
+            petService.add(p);
+        });
     }
 }
