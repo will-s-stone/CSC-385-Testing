@@ -87,21 +87,11 @@ class ShelterServiceTest {
 
     @Test
     void add() {
-        // attempt to mock jwt
-//        mockStatic(JwtBuilder.class);
-//        String mockJwt = "mockedJwtToken";
-//        JwtBuilder mockBuilder = Mockito.mock(JwtBuilder.class);
-//        when(JwtBuilder.create("shelter_token")).thenReturn(mockBuilder);
-//        when(mockBuilder.claim(Mockito.anyString(), Mockito.any())).thenReturn(mockBuilder);
-//        when(mockBuilder.buildJwt()).thenReturn(mockBuilder.buildJwt());
-//        when(mockBuilder.buildJwt().compact()).thenReturn(mockJwt);
-
         Shelter shelter = new Shelter();
         shelter.setEmailAddress("Shelter3@gmail.com");
         shelter.setId(new ObjectId());
         shelter.setName("Shelter3");
         shelter.setPassword("password3");
-
         Response r = shelterService.add(shelter);
         long count = collection.countDocuments();
         assertEquals(1, count);
