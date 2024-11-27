@@ -22,7 +22,6 @@ import org.jboss.weld.junit5.*;
 import oz.rest.models.Pet;
 import oz.rest.models.Shelter;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
