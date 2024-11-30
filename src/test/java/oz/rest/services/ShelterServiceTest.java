@@ -118,6 +118,508 @@ class ShelterServiceTest {
     }
 
     @Test
+    void testCase_c_1_1_1(){
+        //add a properly formatted shelter object
+        assert true;
+    }
+
+    @Test
+    void testCase_c_1_1_2(){
+        //add an inproper formatted shelter object
+        assert true;
+    }
+
+    @Test
+    void testCase_c_1_1_3(){
+        //add a null object
+        assert true;
+    }
+
+    @Test
+    void testCase_c_1_1_a(){
+        //add a non-shelter object
+        assert true;
+    }
+
+    @Test
+    void testCase_c_1_1_4(){
+        //add two of the same shelter objects to the database
+        assert true;
+    }
+
+    @Test
+    void testCase_c_2_1_1(){
+        //retrieve an existing shelter with the given id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_2_1_a(){
+        //retrieve an non-existing shelter with the given id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_2_1_b(){
+        //retrieve using an empty string id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_2_1_c(){
+        //retrieve using an integer number
+        assert true;
+    }
+
+    @Test
+    void testCase_c_2_1_d(){
+        //retrieve using a string with a null string
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_1_1(){
+        //search for a existing shelter object that has the name field search filled
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_1_2(){
+        //search for name using an empty string
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_1_3(){
+        //search for name using a null
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_1_a(){
+        //search for name using a integer
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_3_1(){
+        //search for page size of 3
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_3_2(){
+        //search for page size of null
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_3_b(){
+        //search for page size of "5"
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_3_c(){
+        //search for page size of 0
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_3_7(){
+        //search for page size of 2
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_3_4(){
+        //search for page size of 1
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_3_5(){
+        //search for page size of Max_integer
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_3_6(){
+        //search for page size of Max_integer - 1
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_3_d(){
+        //search for page size of Max_integer + 1
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_4_1(){
+        //search for page Number of 1
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_4_2(){
+        //search for page Number of null
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_4_a(){
+        //search for page Number of -9
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_4_b(){
+        //search for page Number of "23"
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_4_c(){
+        //search for page Number of 0
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_4_d(){
+        //search for page Number of 2
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_4_4(){
+        //search for page Number of Max Integer
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_4_5(){
+        //search for page Number of Max Integer -1
+        assert true;
+    }
+
+    @Test
+    void testCase_c_3_4_e(){
+        //search for page Number of Max Integer + 1
+        assert true;
+    }
+
+    @Test
+    void testCase_c_4_1_1(){
+        //update an existing shelter object with a new proper shelter object
+        //with an existing id and proper id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_4_1_2(){
+        //update an existing shelter object with a new in-proper shelter object
+        //with an existing id and proper id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_4_1_3(){
+        //update an existing shelter object with a null object
+        //with an existing id and proper id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_4_1_a(){
+        //update an existing shelter object with a non-shelter object
+        //with an existing id and proper id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_4_2_1(){
+        //update an existing shelter object with a new proper shelter object
+        //with an existing id and in-proper id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_4_2_2(){
+        //update an existing shelter object with a new proper shelter object
+        //with an existing id and "" id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_4_2_a(){
+        //update an existing shelter object with a new proper shelter object
+        //with an existing id and null id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_4_2_b(){
+        //update an existing shelter object with a new proper shelter object
+        //with an existing id and integer id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_5_1_1(){
+        //remove an existing gobject with an existing proper id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_5_1_a(){
+        //remove an existing gobject with an existing in-proper id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_5_1_b(){
+        //remove an existing gobject with an existing "" id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_5_1_c(){
+        //remove an existing gobject with an existing integer id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_5_1_d(){
+        //remove an existing gobject with an existing "null" id
+        assert true;
+    }
+
+    @Test
+    void testCase_c_6_1_1(){
+        //use an existing and proper email
+        //use an existing and proper password
+        assert true;
+    }
+
+    @Test
+    void testCase_c_6_1_2(){
+        //use an non-existing and proper email
+        //use an existing and proper password
+        assert true;
+    }
+
+    @Test
+    void testCase_c_6_1_3(){
+        //use an "" email
+        //use an existing and proper password
+        assert true;
+    }
+
+    @Test
+    void testCase_c_6_1_a(){
+        //use an null email
+        //use an existing and proper password
+        assert true;
+    }
+
+    @Test
+    void testCase_c_6_2_2(){
+        //use an existing and proper email
+        //use an non-existing and proper password
+        assert true;
+    }
+
+    @Test
+    void testCase_c_6_2_3(){
+        //use an existing and proper email
+        //use an "" password
+        assert true;
+    }
+
+    @Test
+    void testCase_c_6_2_a(){
+        //use an existing and proper email
+        //use an null password
+        assert true;
+    }
+
+    @Test
+    void testCase_c_7_1_1(){
+        //use an existing and proper id
+        //use an properly formatted jwt token
+        assert true;
+    }
+
+    @Test
+    void testCase_c_7_1_2(){
+        //use an existing and proper id
+        //use an in-proper formatted jwt token
+        assert true;
+    }
+
+    @Test
+    void testCase_c_7_1_3(){
+        //use an existing and proper id
+        //use an "" jwt token
+        assert true;
+    }
+
+    @Test
+    void testCase_c_7_1_a(){
+        //use an existing and proper id
+        //use an integer jwt token
+        assert true;
+    }
+
+    @Test
+    void testCase_c_7_1_b(){
+        //use an existing and proper id
+        //use an null jwt token
+        assert true;
+    }
+
+    @Test
+    void testCase_c5_1_1_1(){
+        //Shelter properly_Formatted but when building jwt connection to database is lost
+        assert true;
+    }
+
+    @Test
+    void testCase_c5_2_1_1(){
+        //Properly formatted id but not existing shelter with that id
+        assert true;
+    }
+
+    @Test
+    void testCase_c5_3_1_1(){
+        //all fields for the find method are null
+        assert true;
+    }
+
+    @Test
+    void testCase_c5_3_1_2(){
+        //all fields for the find method are filled and proper
+        assert true;
+    }
+
+    @Test
+    void testCase_c5_4_1_1(){
+        //properly formatted sheller object
+        //proper id but not corresponding shelter with that id
+        assert true;
+    }
+
+    @Test
+    void testCase_c5_7_1_1(){
+        //properly formatted jwt token
+        //in-proper id token
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_1_1_1(){
+        //properly formatted shelter object
+        //no database
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_1_1_2(){
+        //properly formatted shelter object
+        //no validator
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_2_1_1(){
+        //properly formatted id
+        //no database
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_2_1_2(){
+        //properly formatted id
+        //no validator
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_3_1_1(){
+        //properly formatted search parameters
+        //no database
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_3_1_2(){
+        //properly formatted search parameters
+        //no validator
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_5_1_1(){
+        //properly formatted id
+        //no database
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_5_1_2(){
+        //properly formatted id
+        //no validator
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_6_1_1(){
+        //properly formatted email/password
+        //no database
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_6_1_2(){
+        //properly formatted email/password
+        //no validator
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_7_1_1(){
+        //properly formatted id/jwt
+        //no database
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_7_1_2(){
+        //properly formatted id/jwt
+        //no validator
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_4_1_1(){
+        //properly formatted id/shelter object
+        //no database
+        assert true;
+    }
+
+    @Test
+    void testCase_c8_4_1_2(){
+        //properly formatted id/shelter object
+        //no validator
+        assert true;
+    }
+
+
+
+
+
+    @Test
     void retrieve() {
     }
 
