@@ -107,6 +107,11 @@ class PetServiceTest {
         mongoClient.close();
     }
 
+    /**
+     * Specification Based Testing
+     * Tests PetService's `add` function
+     * _________________________________________________
+     */
     @Test
     void tcb1_1(){
         ArrayList<String> images = new ArrayList<>();
@@ -158,10 +163,130 @@ class PetServiceTest {
         assert(true);
     }
     @Test
-    void tcb_8(){
+    void tcb1_8(){
         Pet p = null;
         assertThrows(Exception.class, () -> {
             petService.add(p);
         });
     }
+    /**
+     * Specification Based Testing
+     * Tests PetService's `retrieve` function
+     * _________________________________________________
+     */
+    @Test
+    void tcb2_2(){
+
+    }
+    @Test
+    void tcb2_3(){
+
+    }
+    @Test
+    void tcb2_4(){
+
+    }
+    @Test
+    void tcb2_5(){
+
+    }
+
+    /**
+     * Specification Based Testing
+     * Tests PetService's `find` function
+     * _________________________________________________
+     */
+    @Test
+    void tcb3_1_1(){
+
+    }
+    @Test
+    void tcb3_1_2(){
+
+    }
+    @Test
+    void tcb3_1_3(){
+
+    }
+    @Test
+    void tcb3_1_4(){
+
+    }
+    @Test
+    void tcb3_1_a(){
+
+    }
+    @Test
+    void tcb3_2_1(){
+
+    }
+    @Test
+    void tcb3_2_2(){
+
+    }
+    @Test
+    void tcb3_2_3(){
+
+    }
+    @Test
+    void tcb3_2_4(){
+
+    }
+    @Test
+    void tcb3_2_5(){
+
+    }
+    @Test
+    void tcb3_2_a(){
+
+    }
+    @Test
+    void tcb3_3_1(){
+
+    }
+    @Test
+    void tcb3_3_2(){
+
+    }
+    @Test
+    void tcb3_3_3(){
+
+    }
+    @Test
+    void tcb3_3_4(){
+
+    }
+    @Test
+    void tcb3_3_5(){
+
+    }
+    @Test
+    void tcb3_3_a(){
+
+    }
+    @Test
+    void tcb3_3_b(){
+
+    }
+    @Test
+    void tcb3_4_1(){
+
+    }
+    @Test
+    void tcb3_4_2(){
+
+    }
+    @Test
+    void tcb3_4_3(){
+
+    }
+    @Test
+    void tcb3_4_4(){
+
+    }
+    @Test
+    void tcb3_4_a(){
+
+    }
+
 }
