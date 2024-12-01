@@ -120,7 +120,13 @@ class ShelterServiceTest {
     @Test
     void testCase_c_1_1_1(){
         //add a properly formatted shelter object
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("Shelter3@gmail.com");
+        shelter.setId(new ObjectId());
+        shelter.setName("Shelter3");
+        shelter.setPassword("password3");
+        Response r = shelterService.add(shelter);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
