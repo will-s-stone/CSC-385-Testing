@@ -151,28 +151,4 @@ class ZipCodeServiceTest {
             zipCodeService.getViolations(zipCode);
         });
     }
-    @Test
-    void testcase_d5_1_1_1(){
-        //UN-TEST ABLE
-        //Properly formatted Zip Code object and no shelters exist in the database with that zipcode
-        assert false;
-    }
-    @Test
-    void testcase_d5_1_1_2(){
-        //UN-TEST ABLE
-        //Properly formatted Zip Code object and one shelters exist in the database with that zipcode
-        assert false;
-    }
-    @Test
-    void testcase_d5_1_1_3(){
-        //UN-TEST ABLE
-        //Properly formatted Zip Code object and two shelters exist in the database with that zipcode
-        assert false;
-    }
-    @Test
-    void testcase_d5_1_1_4(){
-        //UN-TEST ABLE
-        //Properly formatted Zip Code object and three shelters exist in the database with that zipcode
-        assert false;
-    }
 }

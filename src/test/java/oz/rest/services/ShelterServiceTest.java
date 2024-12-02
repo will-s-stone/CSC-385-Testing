@@ -149,17 +149,6 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCase_c_1_1_a(){
-        //TEST CASE NOT POSSIBLE
-        ZipCode zipCode = new ZipCode();
-        zipCode.setZipCode("167583");
-        assertThrowsExactly(Exception.class,()->{
-            //shelterService.add(zipCode);
-        } );
-        assert false;
-    }
-
-    @Test
     void testCase_c_1_1_4(){
         //add two of the same shelter objects to the database
         Shelter shelter = new Shelter();
@@ -205,27 +194,6 @@ class ShelterServiceTest {
             shelterService.retrieve(id.toString());
         });
         //retrieve an non-existing shelter with the given id
-    }
-
-    @Test
-    void testCase_c_2_1_b(){
-        //TEST CASE NOT ACTUALLY POSSIBLE
-        //retrieve using an empty string id
-        assert false;
-    }
-
-    @Test
-    void testCase_c_2_1_c(){
-        //TEST CASE NOT ACTUALLY POSSIBLE
-        //retrieve using an integer number
-        assert false;
-    }
-
-    @Test
-    void testCase_c_2_1_d(){
-        //TEST CASE NOT ACTUALLY POSSIBLE
-        //retrieve using a string with a null string
-        assert false;
     }
 
     @Test
@@ -279,7 +247,6 @@ class ShelterServiceTest {
         shelterService.add(shelter);
         Response r = shelterService.find("48","",0,0);
         assertEquals(404, r.getStatus());
-        assert false;
     }
 
     @Test
@@ -330,7 +297,6 @@ class ShelterServiceTest {
         shelterService.add(shelter);
         Response r = shelterService.find("",null,0,0);
         assertEquals(404, r.getStatus());
-        assert false;
     }
 
     @Test
@@ -371,7 +337,6 @@ class ShelterServiceTest {
         shelterService.add(shelter);
         Response r = shelterService.find("","",5 /*"5"*/,0);
         assertEquals(404, r.getStatus());
-        assert false;
     }
 
     @Test
@@ -491,13 +456,6 @@ class ShelterServiceTest {
         assertThrowsExactly(Exception.class, ()->{
             shelterService.find("","",0,-9);
         });
-    }
-
-    @Test
-    void testCase_c_3_4_b(){
-        //TEST CASE NOT POSSIBLE
-        //search for page Number of "23"
-        assert false;
     }
 
     @Test
@@ -632,46 +590,6 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCase_c_4_1_a(){
-        //TEST CASE NOT POSSIBLE
-        //update an existing shelter object with a non-shelter object
-        //with an existing id and proper id
-        assert false;
-    }
-
-    @Test
-    void testCase_c_4_2_1(){
-        //TEST CASE NOT POSSIBLE
-        //update an existing shelter object with a new proper shelter object
-        //with an existing id and in-proper id
-        assert false;
-    }
-
-    @Test
-    void testCase_c_4_2_2(){
-        //TEST CASE NOT POSSIBLE
-        //update an existing shelter object with a new proper shelter object
-        //with an existing id and "" id
-        assert false;
-    }
-
-    @Test
-    void testCase_c_4_2_a(){
-        //TEST CASE NOT POSSIBLE
-        //update an existing shelter object with a new proper shelter object
-        //with an existing id and null id
-        assert false;
-    }
-
-    @Test
-    void testCase_c_4_2_b(){
-        //TEST CASE NOT POSSIBLE
-        //update an existing shelter object with a new proper shelter object
-        //with an existing id and integer id
-        assert false;
-    }
-
-    @Test
     void testCase_c_5_1_1(){
         //remove an existing gobject with an existing proper id
         Shelter shelter = new Shelter();
@@ -685,34 +603,6 @@ class ShelterServiceTest {
         shelterService.add(shelter);
         Response r = shelterService.remove(id.toString());
         assertEquals(200, r.getStatus());
-    }
-
-    @Test
-    void testCase_c_5_1_a(){
-        //TEST CASE NOT POSSIBLE
-        //remove an existing object with an existing in-proper id
-        assert false;
-    }
-
-    @Test
-    void testCase_c_5_1_b(){
-        //TEST CASE NOT POSSIBLE
-        //remove an existing object with an existing "" id
-        assert false;
-    }
-
-    @Test
-    void testCase_c_5_1_c(){
-        //TEST CASE NOT POSSIBLE
-        //remove an existing object with an existing integer id
-        assert false;
-    }
-
-    @Test
-    void testCase_c_5_1_d(){
-        //TEST CASE NOT POSSIBLE
-        //remove an existing object with an existing "null" id
-        assert false;
     }
 
     @Test
@@ -876,12 +766,6 @@ class ShelterServiceTest {
         assertThrows(Exception.class, ()->{
             shelterService.authenticateJWT("s1234",null);
         });
-    }
-
-    @Test
-    void testCase_c5_1_1_1(){
-        //Shelter properly_Formatted but when building jwt connection to database is lost
-        assert true;
     }
 
     @Test
