@@ -950,7 +950,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCase_c5_4_1_1(){
+    void testCase_c5_4_1_1() {
         //properly formatted sheller object
         //proper id but not corresponding shelter with that id
         Shelter shelter = new Shelter();
@@ -964,113 +964,8 @@ class ShelterServiceTest {
         updatedShelter.setEmailAddress("AnimalAmsterdam@gmail.com");
         updatedShelter.setName("Amsterdam Animal Shelter");
         updatedShelter.setPassword("password1");
-        Response r = shelterService.update(updatedShelter,new ObjectId().toString());
+        Response r = shelterService.update(updatedShelter, new ObjectId().toString());
         assertEquals(404, r.getStatus());
-    }
-
-    @Test
-    void testCase_c5_7_1_1(){
-        //TEST CASE NOT POSSIBLE
-        //properly formatted jwt token
-        //in-proper id token
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_1_1_1() {
-        //properly formatted shelter object
-        //no database
-        assert false;
-    }
-    @Test
-    void testCase_c8_1_1_2(){
-        //properly formatted shelter object
-        //no validator
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_2_1_1(){
-        //properly formatted id
-        //no database
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_2_1_2(){
-        //properly formatted id
-        //no validator
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_3_1_1(){
-        //properly formatted search parameters
-        //no database
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_3_1_2(){
-        //properly formatted search parameters
-        //no validator
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_5_1_1(){
-        //properly formatted id
-        //no database
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_5_1_2(){
-        //properly formatted id
-        //no validator
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_6_1_1(){
-        //properly formatted email/password
-        //no database
-        assert true;
-    }
-
-    @Test
-    void testCase_c8_6_1_2(){
-        //properly formatted email/password
-        //no validator
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_7_1_1(){
-        //properly formatted id/jwt
-        //no database
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_7_1_2(){
-        //properly formatted id/jwt
-        //no validator
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_4_1_1(){
-        //properly formatted id/shelter object
-        //no database
-        assert false;
-    }
-
-    @Test
-    void testCase_c8_4_1_2(){
-        //properly formatted id/shelter object
-        //no validator
-        assert false;
     }
 
     @Test
