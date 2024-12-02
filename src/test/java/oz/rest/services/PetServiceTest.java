@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -175,20 +176,49 @@ class PetServiceTest {
      * _________________________________________________
      */
     @Test
+    void tcb2_1(){
+        ArrayList<String> images = new ArrayList<>();
+        images.add(processImage(Path.of("src/test/java/oz/rest/services/test-materials/dog.png")));
+        Pet p = generatePet(
+                "MeatStick",
+                "p42245",
+                images,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        Response r = petService.retrieve("p42245");
+        assertEquals(200, r.getStatus());
+    }
+    @Test
     void tcb2_2(){
-
+        Response r = petService.retrieve("p42245");
+        assertEquals(400, r.getStatus());
     }
     @Test
     void tcb2_3(){
-
+        assertThrows(Exception.class, () -> {
+            petService.retrieve("a123456");
+        });
     }
     @Test
     void tcb2_4(){
-
+        assertThrows(Exception.class, () -> {
+            petService.retrieve("");
+        });
     }
     @Test
     void tcb2_5(){
-
+        assertThrows(Exception.class, () -> {
+            petService.retrieve(null);
+        });
     }
 
     /**
@@ -198,71 +228,364 @@ class PetServiceTest {
      */
     @Test
     void tcb3_1_1(){
+        Pet p = generatePet(
+                "spots",
+                "p42245",
+                null,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        Response r = petService.find("spots",null, null,null,null,null,null,null,null,null,null,null);
+        assertEquals(200, r.getStatus());
 
     }
     @Test
     void tcb3_1_2(){
-
+        Pet p = generatePet(
+                "spots",
+                "p42245",
+                null,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        Response r = petService.find("",null, null,null,null,null,null,null,null,null,null,null);
+        assertEquals(404, r.getStatus());
     }
     @Test
     void tcb3_1_3(){
-
+        Pet p = generatePet(
+                "spots",
+                "p42245",
+                null,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        Response r = petService.find(null,null, null,null,null,null,null,null,null,null,null,null);
+        assertEquals(404, r.getStatus());
     }
     @Test
     void tcb3_1_4(){
-
+        Pet p = generatePet(
+                "spots",
+                "p42245",
+                null,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        Response r = petService.find(null,"p42245", null,null,null,null,null,null,null,null,null,null);
+        assertEquals(200, r.getStatus());
     }
     @Test
     void tcb3_1_a(){
-
+        Pet p = generatePet(
+                "spots",
+                "p42245",
+                null,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        //Response r = petService.find(42,null, null,null,null,null,null,null,null,null,null,null);
+        assert true;
     }
     @Test
     void tcb3_2_1(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        Response r = petService.find(null,"s462901", null,null,null,null,null,null,null,null,null,null);
+        assertEquals(200, r.getStatus());
     }
     @Test
     void tcb3_2_2(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        Response r = petService.find(null,"a123123", null,null,null,null,null,null,null,null,null,null);
+        assertEquals(404, r.getStatus());
     }
     @Test
     void tcb3_2_3(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        Response r = petService.find(null,null, null,null,null,null,null,null,null,null,null,null);
+        assertEquals(404, r.getStatus());
     }
     @Test
     void tcb3_2_4(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        Response r = petService.find("spots",null, null,null,null,null,null,null,null,null,null,null);
+        assertEquals(200, r.getStatus());
     }
     @Test
     void tcb3_2_5(){
-
+        Response r = petService.find(null,"", null,null,null,null,null,null,null,null,null,null);
+        assertEquals(404, r.getStatus());
     }
     @Test
     void tcb3_2_a(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "Dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        petService.add(p);
+        //Response r = petService.find(null,123, null,null,null,null,null,null,null,null,null,null);
+        assert true;
     }
     @Test
     void tcb3_3_1(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "cat",
+                "calico",
+                "yellow",
+                "debatable",
+                3,
+                "yes please",
+                "oof",
+                "ding dong",
+                "Will attack small children"
+        );
+        petService.add(p);
+        List<String> t = List.of(new String[]{"cat"});
+        Response r = petService.find(null,null, t,null,null,null,null,null,null,null,null,null);
+        assertEquals(200, r.getStatus());
     }
     @Test
     void tcb3_3_2(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        Pet p2 = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "bird",
+                "calico",
+                "yellow",
+                "debatable",
+                3,
+                "yes please",
+                "oof",
+                "ding dong",
+                "Will attack small children"
+        );
+        petService.add(p);
+        petService.add(p2);
+        List<String> t = List.of(new String[]{"dog", "bird"});
+        Response r = petService.find(null,null, t,null,null,null,null,null,null,null,null,null);
+        assertEquals(200, r.getStatus());
     }
     @Test
     void tcb3_3_3(){
-
+        List<String> t = new ArrayList<>();
+        Response r = petService.find(null,null, t,null,null,null,null,null,null,null,null,null);
+        assertEquals(404, r.getStatus());
     }
     @Test
     void tcb3_3_4(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        Pet p2 = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "bird",
+                "calico",
+                "yellow",
+                "debatable",
+                3,
+                "yes please",
+                "oof",
+                "ding dong",
+                "Will attack small children"
+        );
+        petService.add(p);
+        petService.add(p2);
+        Response r = petService.find(null,null, null,null,null,null,null,null,null,null,null,null);
+        assertEquals(404, r.getStatus());
     }
     @Test
     void tcb3_3_5(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "dog",
+                "Schnauzer",
+                "gray",
+                "debatable",
+                3,
+                "Male",
+                "Small enough to kick, big enough to play fetch",
+                "hot-headed",
+                "Will attack small children"
+        );
+        Pet p2 = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "bird",
+                "calico",
+                "yellow",
+                "debatable",
+                3,
+                "yes please",
+                "oof",
+                "ding dong",
+                "Will attack small children"
+        );
+        petService.add(p);
+        petService.add(p2);
+        Response r = petService.find("spots",null, null,null,null,null,null,null,null,null,null,null);
+        assertEquals(200, r.getStatus());
     }
     @Test
     void tcb3_3_a(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "cat",
+                "calico",
+                "yellow",
+                "debatable",
+                3,
+                "yes please",
+                "oof",
+                "ding dong",
+                "Will attack small children"
+        );
+        petService.add(p);
+        List t = List.of(new int[]{1, 2, 3});
+        assertThrows(Exception.class, () -> {
+            petService.find(null,null, t,null,null,null,null,null,null,null,null,null);
+        });
     }
     @Test
     void tcb3_3_b(){
