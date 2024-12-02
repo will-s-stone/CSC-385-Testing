@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 
 import oz.rest.models.Adopter;
 import oz.rest.models.Shelter;
+import oz.rest.models.ZipCode;
 
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -130,324 +131,710 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCase_c_1_1_2(){
-        //add an inproper formatted shelter object
-        assert true;
+    void testCase_c_1_1_2() throws InterruptedException {
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("Thomas house");
+        shelter.setPassword("562462");
+        shelter.setDescription("thomas house");
+        Response r = shelterService.add(shelter);
+        assertEquals(400, r.getStatus());
     }
 
     @Test
     void testCase_c_1_1_3(){
         //add a null object
-        assert true;
+        Shelter shelter = null;
+        Response r = shelterService.add(shelter);
+        assertEquals(400, r.getStatus());
     }
 
     @Test
     void testCase_c_1_1_a(){
-        //add a non-shelter object
-        assert true;
+        //TEST CASE NOT POSSIBLE
+        ZipCode zipCode = new ZipCode();
+        zipCode.setZipCode("167583");
+        assertThrowsExactly(Exception.class,()->{
+            //shelterService.add(zipCode);
+        } );
+        assert false;
     }
 
     @Test
     void testCase_c_1_1_4(){
         //add two of the same shelter objects to the database
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("Shelter3@gmail.com");
+        shelter.setId(new ObjectId());
+        shelter.setName("Shelter3");
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Shelter shelter2 = new Shelter();
+        shelter.setEmailAddress("Shelter3@gmail.com");
+        shelter.setId(new ObjectId());
+        shelter.setName("Shelter3");
+        shelter.setPassword("password3");
+        Response r1 = shelterService.add(shelter2);
+        assertEquals(409, r1.getStatus());
     }
 
     @Test
     void testCase_c_2_1_1(){
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("Shelter3@gmail.com");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setName("Shelter3");
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r1 = shelterService.retrieve(id.toString());
+        assertEquals(200, r1.getStatus());
         //retrieve an existing shelter with the given id
-        assert true;
     }
 
     @Test
     void testCase_c_2_1_a(){
+        //TEST CASE NOT ACTUALLY POSSIBLE
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("Shelter3@gmail.com");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setName("Shelter3");
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        assertThrowsExactly(Exception.class,()->{
+            shelterService.retrieve(id.toString());
+        });
         //retrieve an non-existing shelter with the given id
-        assert true;
     }
 
     @Test
     void testCase_c_2_1_b(){
+        //TEST CASE NOT ACTUALLY POSSIBLE
         //retrieve using an empty string id
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c_2_1_c(){
+        //TEST CASE NOT ACTUALLY POSSIBLE
         //retrieve using an integer number
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c_2_1_d(){
+        //TEST CASE NOT ACTUALLY POSSIBLE
         //retrieve using a string with a null string
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c_3_1_1(){
         //search for a existing shelter object that has the name field search filled
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("Amsterdam Animal Shelter","",0,0);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_1_2(){
         //search for name using an empty string
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",0,0);
+        assertEquals(404, r.getStatus());
     }
 
     @Test
     void testCase_c_3_1_3(){
         //search for name using a null
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find(null,"",0,0);
+        assertEquals(404, r.getStatus());
     }
 
     @Test
     void testCase_c_3_1_a(){
+        //TEST CASE NOT POSSIBLE
         //search for name using a integer
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("48","",0,0);
+        assertEquals(404, r.getStatus());
+        assert false;
+    }
+
+    @Test
+    void testCase_c_3_2_1(){
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","pawspawshelter@gmail.com",0,0);
+        assertEquals(200, r.getStatus());
+
+    }
+
+    @Test
+    void testCase_c_3_2_2(){
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",0,0);
+        assertEquals(404, r.getStatus());
+    }
+
+    @Test
+    void testCase_c_3_2_3(){
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("",null,0,0);
+        assertEquals(404, r.getStatus());
+    }
+
+    @Test
+    void testCase_c_3_2_a(){
+        //TEST CASE NOT POSSIBLE
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("",null,0,0);
+        assertEquals(404, r.getStatus());
+        assert false;
     }
 
     @Test
     void testCase_c_3_3_1(){
         //search for page size of 3
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",3,0);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_3_2(){
         //search for page size of null
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",null,0);
+        assertEquals(404, r.getStatus());
     }
 
     @Test
     void testCase_c_3_3_b(){
+        //TEST CASE NOT POSSIBLE
         //search for page size of "5"
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",5 /*"5"*/,0);
+        assertEquals(404, r.getStatus());
+        assert false;
     }
 
     @Test
     void testCase_c_3_3_c(){
         //search for page size of 0
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        assertThrowsExactly(Exception.class, ()->{
+            Response r = shelterService.find("","",0,0);
+        });
     }
 
     @Test
     void testCase_c_3_3_7(){
         //search for page size of 2
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",2,0);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_3_4(){
         //search for page size of 1
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",1,0);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_3_5(){
         //search for page size of Max_integer
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",Integer.MAX_VALUE,0);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_3_6(){
         //search for page size of Max_integer - 1
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",Integer.MAX_VALUE-1,0);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_3_d(){
         //search for page size of Max_integer + 1
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",Integer.MAX_VALUE+1,0);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_4_1(){
         //search for page Number of 1
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",0,1);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_4_2(){
         //search for page Number of null
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",0,null);
+        assertEquals(404, r.getStatus());
     }
 
     @Test
     void testCase_c_3_4_a(){
         //search for page Number of -9
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        assertThrowsExactly(Exception.class, ()->{
+            shelterService.find("","",0,-9);
+        });
     }
 
     @Test
     void testCase_c_3_4_b(){
+        //TEST CASE NOT POSSIBLE
         //search for page Number of "23"
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c_3_4_c(){
         //search for page Number of 0
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        assertThrowsExactly(Exception.class, ()->{
+            shelterService.find("","",0,0);
+        });
     }
 
     @Test
     void testCase_c_3_4_d(){
         //search for page Number of 2
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",0,2);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_4_4(){
         //search for page Number of Max Integer
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",0,Integer.MAX_VALUE);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_4_5(){
         //search for page Number of Max Integer -1
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("","",0,Integer.MAX_VALUE-1);
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_3_4_e(){
         //search for page Number of Max Integer + 1
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("pawspawshelter@gmail.com");
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setId(new ObjectId());
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        assertThrowsExactly(Exception.class,()->{
+            shelterService.find("","",0,Integer.MAX_VALUE+1);
+        });
     }
 
     @Test
     void testCase_c_4_1_1(){
         //update an existing shelter object with a new proper shelter object
         //with an existing id and proper id
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("523051");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        Shelter updateShelter = new Shelter();
+        updateShelter.setEmailAddress("tomhouse@gmail.com");
+        updateShelter.setName("Toms cat house");
+        updateShelter.setId(id);
+        updateShelter.setPassword("523051");
+        updateShelter.setDescription("tom loves cats and has a house to keep cats");
+        updateShelter.setPhoneNumber("518-777-8100");
+        Response r = shelterService.update(updateShelter,id.toString());
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_4_1_2(){
         //update an existing shelter object with a new in-proper shelter object
         //with an existing id and proper id
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("523051");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        Shelter updateShelter = new Shelter();
+        updateShelter.setName("Thomas House");
+        updateShelter.setId(id);
+        updateShelter.setPassword("562462");
+        updateShelter.setDescription("Thomas House");
+        Response r = shelterService.update(updateShelter,id.toString());
+        assertEquals(400, r.getStatus());
     }
 
     @Test
     void testCase_c_4_1_3(){
         //update an existing shelter object with a null object
         //with an existing id and proper id
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("523051");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        Shelter updateShelter = null;
+        Response r = shelterService.update(updateShelter,id.toString());
+        assertEquals(400, r.getStatus());
     }
 
     @Test
     void testCase_c_4_1_a(){
+        //TEST CASE NOT POSSIBLE
         //update an existing shelter object with a non-shelter object
         //with an existing id and proper id
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c_4_2_1(){
+        //TEST CASE NOT POSSIBLE
         //update an existing shelter object with a new proper shelter object
         //with an existing id and in-proper id
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c_4_2_2(){
+        //TEST CASE NOT POSSIBLE
         //update an existing shelter object with a new proper shelter object
         //with an existing id and "" id
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c_4_2_a(){
+        //TEST CASE NOT POSSIBLE
         //update an existing shelter object with a new proper shelter object
         //with an existing id and null id
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c_4_2_b(){
+        //TEST CASE NOT POSSIBLE
         //update an existing shelter object with a new proper shelter object
         //with an existing id and integer id
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c_5_1_1(){
         //remove an existing gobject with an existing proper id
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("523051");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        Response r = shelterService.remove(id.toString());
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_5_1_a(){
-        //remove an existing gobject with an existing in-proper id
-        assert true;
+        //TEST CASE NOT POSSIBLE
+        //remove an existing object with an existing in-proper id
+        assert false;
     }
 
     @Test
     void testCase_c_5_1_b(){
-        //remove an existing gobject with an existing "" id
-        assert true;
+        //TEST CASE NOT POSSIBLE
+        //remove an existing object with an existing "" id
+        assert false;
     }
 
     @Test
     void testCase_c_5_1_c(){
-        //remove an existing gobject with an existing integer id
-        assert true;
+        //TEST CASE NOT POSSIBLE
+        //remove an existing object with an existing integer id
+        assert false;
     }
 
     @Test
     void testCase_c_5_1_d(){
-        //remove an existing gobject with an existing "null" id
-        assert true;
+        //TEST CASE NOT POSSIBLE
+        //remove an existing object with an existing "null" id
+        assert false;
     }
 
     @Test
-    void testCase_c_6_1_1(){
+    void testCase_c_6_1_1() throws Exception {
         //use an existing and proper email
         //use an existing and proper password
-        assert true;
+        //This did work, just no actual login service
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("gingerbread1231!");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        Response r = shelterService.login("tomhouse@gmail.com","gingerbread1231!");
+        assertEquals(200, r.getStatus());
     }
 
     @Test
-    void testCase_c_6_1_2(){
+    void testCase_c_6_1_2() throws Exception {
         //use an non-existing and proper email
         //use an existing and proper password
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("gingerbread1231!");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        Response r = shelterService.login("joberd@gmail.com","gingerbread1231!");
+        assertEquals(401, r.getStatus());
     }
 
     @Test
-    void testCase_c_6_1_3(){
+    void testCase_c_6_1_3() throws Exception {
         //use an "" email
         //use an existing and proper password
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("gingerbread1231!");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        Response r = shelterService.login("","gingerbread1231!");
+        assertEquals(401, r.getStatus());
     }
 
     @Test
     void testCase_c_6_1_a(){
         //use an null email
         //use an existing and proper password
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("gingerbread1231!");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        assertThrowsExactly(NullPointerException.class,()->{
+            shelterService.login(null,"gingerbread1231!");
+        });
     }
 
     @Test
-    void testCase_c_6_2_2(){
+    void testCase_c_6_2_2() throws Exception {
         //use an existing and proper email
         //use an non-existing and proper password
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("gingerbread1231!");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        Response r = shelterService.login("tomhouse@gmail.com","manker@#1");
+        assertEquals(401, r.getStatus());
     }
 
     @Test
-    void testCase_c_6_2_3(){
+    void testCase_c_6_2_3() throws Exception {
         //use an existing and proper email
         //use an "" password
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("gingerbread1231!");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        Response r = shelterService.login("tomhouse@gmail.com","");
+        assertEquals(401, r.getStatus());
     }
 
     @Test
-    void testCase_c_6_2_a(){
+    void testCase_c_6_2_a() throws Exception {
         //use an existing and proper email
         //use an null password
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("tomhouse@gmail.com");
+        shelter.setName("Toms cat house");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setPassword("gingerbread1231!");
+        shelter.setDescription("tom loves cats and has a house to keep cats");
+        shelter.setPhoneNumber("312-325-3325");
+        shelterService.add(shelter);
+        assertThrowsExactly(NullPointerException.class,()->{
+            shelterService.login("tomhouse@gmail.com",null);
+        });
     }
 
     @Test
