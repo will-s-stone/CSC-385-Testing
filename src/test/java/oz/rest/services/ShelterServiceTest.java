@@ -841,35 +841,41 @@ class ShelterServiceTest {
     void testCase_c_7_1_1(){
         //use an existing and proper id
         //use an properly formatted jwt token
-        assert true;
+        Response r = shelterService.authenticateJWT("s1234","H2385");
+        assertEquals(200, r.getStatus());
     }
 
     @Test
     void testCase_c_7_1_2(){
         //use an existing and proper id
         //use an in-proper formatted jwt token
-        assert true;
+        Response r = shelterService.authenticateJWT("s1234","66666666");
+        assertEquals(401, r.getStatus());
     }
 
     @Test
     void testCase_c_7_1_3(){
         //use an existing and proper id
         //use an "" jwt token
-        assert true;
+        Response r = shelterService.authenticateJWT("s1234","");
+        assertEquals(401, r.getStatus());
     }
 
     @Test
     void testCase_c_7_1_a(){
+        //TEST CASE NOT POSSIBLE
         //use an existing and proper id
         //use an integer jwt token
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c_7_1_b(){
         //use an existing and proper id
         //use an null jwt token
-        assert true;
+        assertThrows(Exception.class, ()->{
+            shelterService.authenticateJWT("s1234",null);
+        });
     }
 
     @Test
@@ -881,89 +887,148 @@ class ShelterServiceTest {
     @Test
     void testCase_c5_2_1_1(){
         //Properly formatted id but not existing shelter with that id
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("Shelter3@gmail.com");
+        shelter.setId(new ObjectId());
+        shelter.setName("Shelter3");
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.retrieve(new ObjectId().toString());
+        assertEquals(400, r.getStatus());
     }
 
     @Test
     void testCase_c5_3_1_1(){
         //all fields for the find method are null
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("Shelter3@gmail.com");
+        shelter.setId(new ObjectId());
+        shelter.setName("Shelter3");
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find(null,null,null,null);
+        assertEquals(404, r.getStatus());
     }
 
     @Test
     void testCase_c5_3_1_2(){
         //all fields for the find method are filled and proper
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("animalAmsterdam@gmail.com");
+        shelter.setId(new ObjectId());
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setPassword("password3");
+        shelterService.add(shelter);
+        Response r = shelterService.find("Amsterdam Animal Shelter","animalAmsterdam@gmail.com",3,3);
+        assertEquals(200, r.getStatus());
+    }
+
+    @Test
+    void testCase_c5_3_1_3(){
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("AnimalAmsterdam@gmail.com");
+        shelter.setId(new ObjectId());
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setPassword("password1");
+        shelterService.add(shelter);
+
+        Shelter shelter1 = new Shelter();
+        shelter.setEmailAddress("animalamsterdam@gmail.com");
+        shelter.setId(new ObjectId());
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setPassword("password2");
+        shelterService.add(shelter1);
+
+        Shelter shelter2 = new Shelter();
+        shelter.setEmailAddress("animalAmsterdam@gmail.com");
+        shelter.setId(new ObjectId());
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setPassword("password3");
+        shelterService.add(shelter2);
+        Response r = shelterService.find("Amsterdam Animal Shelter","animalAmsterdam@gmail.com",3,1);
+        assertEquals(200,r.getStatus());
     }
 
     @Test
     void testCase_c5_4_1_1(){
         //properly formatted sheller object
         //proper id but not corresponding shelter with that id
-        assert true;
+        Shelter shelter = new Shelter();
+        shelter.setEmailAddress("AnimalAmsterdam@gmail.com");
+        ObjectId id = new ObjectId();
+        shelter.setId(id);
+        shelter.setName("Amsterdam Animal Shelter");
+        shelter.setPassword("password1");
+        shelterService.add(shelter);
+        Shelter updatedShelter = new Shelter();
+        updatedShelter.setEmailAddress("AnimalAmsterdam@gmail.com");
+        updatedShelter.setName("Amsterdam Animal Shelter");
+        updatedShelter.setPassword("password1");
+        Response r = shelterService.update(updatedShelter,new ObjectId().toString());
+        assertEquals(404, r.getStatus());
     }
 
     @Test
     void testCase_c5_7_1_1(){
+        //TEST CASE NOT POSSIBLE
         //properly formatted jwt token
         //in-proper id token
-        assert true;
+        assert false;
     }
 
     @Test
-    void testCase_c8_1_1_1(){
+    void testCase_c8_1_1_1() {
         //properly formatted shelter object
         //no database
-        assert true;
+        assert false;
     }
-
     @Test
     void testCase_c8_1_1_2(){
         //properly formatted shelter object
         //no validator
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c8_2_1_1(){
         //properly formatted id
         //no database
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c8_2_1_2(){
         //properly formatted id
         //no validator
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c8_3_1_1(){
         //properly formatted search parameters
         //no database
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c8_3_1_2(){
         //properly formatted search parameters
         //no validator
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c8_5_1_1(){
         //properly formatted id
         //no database
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c8_5_1_2(){
         //properly formatted id
         //no validator
-        assert true;
+        assert false;
     }
 
     @Test
@@ -977,40 +1042,36 @@ class ShelterServiceTest {
     void testCase_c8_6_1_2(){
         //properly formatted email/password
         //no validator
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c8_7_1_1(){
         //properly formatted id/jwt
         //no database
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c8_7_1_2(){
         //properly formatted id/jwt
         //no validator
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c8_4_1_1(){
         //properly formatted id/shelter object
         //no database
-        assert true;
+        assert false;
     }
 
     @Test
     void testCase_c8_4_1_2(){
         //properly formatted id/shelter object
         //no validator
-        assert true;
+        assert false;
     }
-
-
-
-
 
     @Test
     void retrieve() {
