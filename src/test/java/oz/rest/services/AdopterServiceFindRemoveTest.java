@@ -127,6 +127,7 @@ public class AdopterServiceFindRemoveTest extends AdopterServiceTest {
 
     // omitted TC#a.3.11, TC#a.3.12 for the same reason as TC#a.3.6
 
+    // omitted TC#a.3.13 after reindexing pageNumbers
 //    @Test
 //    void tca_3_13() {
 //        shouldFail(() -> adopterService.find(null, null, 8, 0));
@@ -170,7 +171,10 @@ public class AdopterServiceFindRemoveTest extends AdopterServiceTest {
     @Test
     void tca_5_1and2() {
         // not following the test exactly, instead of using "a123456" as the id, i will use the id of the first entry
-        ObjectId id = getAdopters().find(eq("email_address", dbEntries[0].getEmailAddress())).first().getId();
+        Adopter first = getAdopters().find(eq("email_address", dbEntries[0].getEmailAddress())).first();
+        if (first == null)
+            fail();
+        ObjectId id = first.getId();
         Adopter[] postOpEntries = Arrays.copyOfRange(dbEntries, 1, dbEntries.length);
 
         // TC#a.5.1
