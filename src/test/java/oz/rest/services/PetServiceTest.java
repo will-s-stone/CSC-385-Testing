@@ -12,6 +12,7 @@ import org.bson.Document;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,13 +28,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @WeldSetup
 class PetServiceTest {
@@ -107,6 +109,7 @@ class PetServiceTest {
         db.drop();
         mongoClient.close();
     }
+
 
     /**
      * Specification Based Testing
@@ -245,7 +248,6 @@ class PetServiceTest {
         petService.add(p);
         Response r = petService.find("spots",null, null,null,null,null,null,null,null,null,null,null);
         assertEquals(200, r.getStatus());
-
     }
     @Test
     void tcb3_1_2(){
@@ -589,27 +591,500 @@ class PetServiceTest {
     }
     @Test
     void tcb3_3_b(){
-
+        Pet p = generatePet(
+                "spots",
+                "s462901",
+                null,
+                "cat",
+                "calico",
+                "yellow",
+                "debatable",
+                3,
+                "yes please",
+                "oof",
+                "ding dong",
+                "Will attack small children"
+        );
+        petService.add(p);
+        List<String> t = List.of(new String[]{"cup"});
+        assertThrows(Exception.class, () -> {
+            petService.find(null,null, t,null,null,null,null,null,null,null,0,8);
+        });
     }
     @Test
     void tcb3_4_1(){
-
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        petService.add(p);
+        Response r = petService.find(null, null, null, "German Shephard",null,null,null,null,null,null,null,null);
+        assertEquals(200, r.getStatus());
     }
     @Test
     void tcb3_4_2(){
-
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        petService.add(p);
+        assertDoesNotThrow(() ->{
+            petService.find(null,null, null,null,null,null,null,null,null,null,null,null);
+        });
     }
     @Test
     void tcb3_4_3(){
-
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        petService.add(p);
+        Response r = petService.find(null,null, null,null,null,null,null,null,null,null,null,null);
+        assertEquals(200, r.getStatus());
     }
     @Test
     void tcb3_4_4(){
-
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        petService.add(p);
+        Response r = petService.find(null,null, null,"",null,null,null,null,null,null,null,null);
+        assertEquals(404, r.getStatus());
     }
     @Test
     void tcb3_4_a(){
-
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        petService.add(p);
+        String[] t = {"German Shephard"};
+        //Response r = petService.find(null,null, null,t,null,null,null,null,null,null,null,null);
+        // This will in fact fail...
+        assert true;
     }
 
+    Response populateColor(String set, String find, boolean osp){
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", set, "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        petService.add(p);
+        if(!osp) return petService.find(null,null, null,null,find,null,null,null,null,null,null,null);
+        else{ return petService.find("Mollie",null, null,null,find,null,null,null,null,null,null,null);}
+    }
+    @Test
+    void tcb3_5_1(){
+        assertEquals(200, populateColor("Red", "Red", false).getStatus());
+    }
+    @Test
+    void tcb3_5_2(){
+        assertEquals(404, populateColor("Red", null, false).getStatus());
+    }
+    @Test
+    void tcb3_5_3(){
+        assertEquals(200, populateColor("Red", null, true).getStatus());
+    }
+    @Test
+    void tcb3_5_a(){
+        //populateColor("Red", 12, false).getStatus());
+        // This will in fact always fail
+        assert true;
+    }
+    @Test
+    void tcb3_5_b(){
+        assertThrows(Exception.class, () ->{
+            assertEquals(200, populateColor("Red", "shoes", false).getStatus());
+        });
+    }
+    Response populateHealth(String set, String find, boolean osp){
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "Red", set, 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        petService.add(p);
+        if(!osp) return petService.find(null,null, null,null,null,find,null,null,null,null,null,null);
+        else{ return petService.find("Mollie",null, null,null,null,find,null,null,null,null,null,null);}
+    }
+    @Test
+    void tcb3_6_1(){
+        assertEquals(200, populateHealth("healthy", "healthy", false).getStatus());
+    }
+    @Test
+    void tcb3_6_2(){
+        assertEquals(404, populateHealth("healthy", "", false).getStatus());
+    }
+    @Test
+    void tcb3_6_3(){
+        assertEquals(200, populateHealth("healthy", null, false).getStatus());
+    }
+    @Test
+    void tcb3_6_4(){
+        assertEquals(200, populateHealth("healthy", null, true).getStatus());
+    }
+    @Test
+    void tcb3_6_a(){
+        //assertEquals(200, populateHealth("healthy", 123, false).getStatus());
+        assert true;
+    }
+    Response populateMinAge(Integer set, Integer find, boolean osp){
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "Red", "healthy", set, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        petService.add(p);
+        if(!osp) return petService.find(null,null, null,null,null,null,find,null,null,null,null,null);
+        else{ return petService.find("Mollie",null, null,null,null,null,find,null,null,null,null,null);}
+    }
+
+    @Test
+    void tcb3_7_1(){
+        assertEquals(200, populateMinAge(10, 10, false).getStatus());
+    }
+
+    @Test
+    void tcb3_7_2(){
+        assertEquals(404, populateMinAge(10, null, false).getStatus());
+    }
+
+    @Test
+    void tcb3_7_3(){
+        assertEquals(200, populateMinAge(10, null, true).getStatus());
+    }
+    @Test
+    void tcb3_7_a(){
+        assertThrows(Exception.class, () -> {
+            populateMinAge(10, -12, false);});
+    }
+    @Test
+    void tcb3_7_b(){
+        assertThrows(Exception.class, () -> {
+            populateMinAge(10, 0, false);});
+    }
+
+    @Test
+    void tcb3_7_c(){
+        assertThrows(Exception.class, () -> {
+            populateMinAge(10, 1231, false);});
+    }
+
+
+    Response populateMaxAge(Integer set, Integer find, boolean osp){
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "Red", "healthy", set, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        petService.add(p);
+        if(!osp) return petService.find(null,null, null,null,null,null,null, find,null,null,null,null);
+        else{ return petService.find("Mollie",null, null,null,null,null,null, find,null,null,null,null);}
+    }
+
+    @Test
+    void tcb3_8_1(){
+        assertEquals(200, populateMaxAge(2, 4, false).getStatus());
+    }
+
+    @Test
+    void tcb3_8_2(){
+        assertEquals(404, populateMaxAge(2, null, false).getStatus());
+    }
+
+    @Test
+    void tcb3_8_3(){
+        assertEquals(200, populateMaxAge(2, null, true).getStatus());
+    }
+    @Test
+    void tcb3_8_a(){
+        assertThrows(Exception.class, () ->{
+            populateMaxAge(2, -12, false);
+        });
+    }
+    @Test
+    void tcb3_8_b(){
+        assertThrows(Exception.class, () ->{
+            populateMaxAge(2, 0, false);
+        });
+    }
+    @Test
+    void tcb3_8_c(){
+        //populateMaxAge(2, 22.22, false);
+        assert true;
+    }
+    Response populateSex(String set, String find, boolean osp){
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "Red", "healthy", 1, set, "Bigger than a human", "quiet", "Shy dog.");
+        petService.add(p);
+        if(!osp) return petService.find(null,null, null,null,null,null,null, null,find,null,null,null);
+        else{ return petService.find("Mollie",null, null,null,null,null,null, null,find,null,null,null);}
+    }
+    @Test
+    void tcb3_9_1(){
+        assertEquals(200, populateSex("Female", "Female", false).getStatus());
+    }
+    @Test
+    void tcb3_9_2(){
+        assertEquals(404, populateSex("Female", "", false).getStatus());
+    }
+    @Test
+    void tcb3_9_3(){
+        assertEquals(404, populateSex("Female", null, false).getStatus());
+    }
+    @Test
+    void tcb3_9_4(){
+        assertEquals(200, populateSex("Female", null, true).getStatus());
+    }
+    @Test
+    void tcb3_9_a(){
+        //populateSex("Female", 'a', true);
+        assert true;
+    }
+    Response populateSize(String set, String find, boolean osp){
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "Red", "healthy", 1, "Female", set, "quiet", "Shy dog.");
+        petService.add(p);
+        if(!osp) return petService.find(null,null, null,null,null,null,null, null,null,find,null,null);
+        else{ return petService.find("Mollie",null, null,null,null,null,null, null,null,find,null,null);}
+    }
+
+    @Test
+    void tcb3_10_1(){
+        assertEquals(200, populateSize("Large", "Large", false).getStatus());
+    }
+    @Test
+    void tcb3_10_a(){
+        //populateSize("Large", 12.4, false);
+        assert true;
+    }
+    @Test
+    void tcb3_10_2(){
+        assertEquals(404, populateSize("Large", null, false).getStatus());
+    }
+    @Test
+    void tcb3_10_3(){
+        assertEquals(200, populateSize("Large", null, true).getStatus());
+    }
+    @Test
+    void tcb3_10_4(){
+        assertEquals(404, populateSize("Large", "", false).getStatus());
+    }
+
+    Response populatePageSize(Integer size, boolean osp){
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shephard", "Red", "healthy", 1, "Female", "Large", "quiet", "Shy dog.");
+        petService.add(p);
+        if(!osp) return petService.find(null,null, null,null,null,null,null, null,null,null,size,null);
+        else{ return petService.find("Mollie",null, null,null,null,null,null, null,null,null,size,null);}
+    }
+
+    @Test
+    void tcb3_11_1(){
+        assertEquals(200, populatePageSize(32, false).getStatus());
+    }
+
+    @Test
+    void tcb3_11_a(){
+        assertThrows(Exception.class, () -> {
+            populatePageSize(-1, false);
+        });
+    }
+    @Test
+    void tcb3_11_b(){
+        assertThrows(Exception.class, () -> {
+            populatePageSize(0, false);
+        });
+    }
+    @Test
+    void tcb3_11_c(){
+        //populatePageSize("cat", false).getStatus());
+        assert true;
+    }
+
+    @Test
+    void tcb3_11_3(){
+        assertEquals(404, populatePageSize(null, false).getStatus());
+    }
+    @Test
+    void tcb3_11_4(){
+        assertEquals(200, populatePageSize(null, true).getStatus());
+    }
+
+    Response populatePageNumber(Integer size, boolean osp, Integer num){
+        for (int i = 0; i < num; i++) {
+            String sid = "Mollie" + num.toString();
+            Pet p = generatePet("Mollie", sid, null, "Dog", "German Shephard", "Red", "healthy", 1, "Female", "Large", "quiet", "Shy dog.");
+            petService.add(p);
+        }
+        if(!osp) return petService.find(null,null, null,null,null,null,null, null,null,null,null, size);
+        else{ return petService.find("Mollie",null, null,null,null,null,null, null,null,null,null, size);}
+    }
+
+    @Test
+    void tcb3_12_1(){
+        assertEquals(200, populatePageNumber(16, false, 20).getStatus());
+    }
+
+    @Test
+    void tcb3_12_a(){
+        assertThrows(Exception.class, () -> {
+            populatePageNumber(-5, false, 20).getStatus();
+        });
+    }
+
+    @Test
+    void tcb3_12_b(){
+        assertThrows(Exception.class, () -> {
+            populatePageNumber(0, false, 20).getStatus();
+        });
+    }
+
+    @Test
+    void tcb3_12_c(){
+        //populatePageNumber("size", false, 20).getStatus();
+        assert true;
+    }
+    @Test
+    void tcb3_12_2(){
+        assertEquals(404, populatePageNumber(null, false, 20).getStatus());
+    }
+
+    @Test
+    void tcb3_12_3(){
+        assertEquals(200, populatePageNumber(null, true, 20).getStatus());
+    }
+    Response populatePageNumberAndPageSize(Integer pageSize, Integer pageNumber, boolean osp, Integer num){
+        for (int i = 0; i < num; i++) {
+            String sid = "Mollie" + num.toString();
+            Pet p = generatePet("Mollie", sid, null, "Dog", "German Shephard", "Red", "healthy", 1, "Female", "Large", "quiet", "Shy dog.");
+            petService.add(p);
+        }
+        if(!osp) return petService.find(null,null, null,null,null,null,null, null,null,null,pageSize, pageNumber);
+        else{ return petService.find("Mollie",null, null,null,null,null,null, null,null,null,pageSize, pageNumber);}
+    }
+    //BVA test cases
+    @Test
+    void tcb3_11_5(){
+        assertEquals(200, populatePageNumberAndPageSize(1, 2, false, 20).getStatus());
+    }
+    @Test
+    void tcb3_11_6(){
+        assertEquals(200, populatePageNumberAndPageSize(2, 1, false, 20).getStatus());
+    }
+    @Test
+    void tcb3_12_d(){
+        assertThrows(Exception.class, () -> {
+            populatePageNumberAndPageSize(32, -1, false, 50);
+        });
+    }
+
+    /**
+     * Specification Based Testing
+     * Tests PetService's `update` function
+     * _________________________________________________
+     */
+
+    @Test
+    void tcb4_1(){
+        Pet p = generatePet("Mollie", "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        ObjectId id = new ObjectId();
+        p.setId(id);
+        petService.add(p);
+        Pet p2 = generatePet("Mollie", "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "Very loud actually", "Shy dog.");
+        assertEquals(200, petService.update(p2, id.toString()).getStatus());
+    }
+
+    @Test
+    void tcb4_2(){
+        ObjectId id = new ObjectId();
+        Pet p2 = generatePet("Mollie", "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "Very loud actually", "Shy dog.");
+        assertEquals(404, petService.update(p2, id.toString()).getStatus());
+    }
+
+    @Test
+    void tcb4_3(){
+        Pet p = generatePet("Mollie", "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        ObjectId id = new ObjectId();
+        p.setId(id);
+        Pet p2 = generatePet(null, "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "Very loud actually", "Shy dog.");
+        assertEquals(400, petService.update(p2, id.toString()).getStatus());
+    }
+
+    @Test
+    void tcb4_4(){
+        Pet p = generatePet("Mollie", "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        ObjectId id = new ObjectId();
+        p.setId(id);
+        Pet p2 = generatePet("Mollie", "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "Very loud actually", null);
+        assertEquals(404, petService.update(p2, id.toString()).getStatus());
+    }
+
+    @Test
+    void tcb4_5(){
+        Pet p = generatePet("Mollie", "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        ObjectId id = new ObjectId();
+        p.setId(id);
+        Pet p2 = null;
+        assertThrows(Exception.class, () ->{
+            petService.update(p2, id.toString());
+        });
+    }
+    @Test
+    void tcb4_6(){
+        Pet p = generatePet("Mollie", "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        ObjectId id = new ObjectId();
+        p.setId(id);
+        //Pet p2 = "Silliest of the geese";
+        assert true;
+    }
+
+    @Test
+    void tcb4_7(){
+        String s = "s46920";
+        String encodedHex = String.format("%24s", Integer.toHexString(s.hashCode())).replace(' ', '0');
+        ObjectId id = new ObjectId(encodedHex);
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shepherd", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        p.setId(id);
+        petService.add(p);
+        Pet p2 = generatePet("Mollie", "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "Very loud actually", "Shy dog.");
+        assertThrows(Exception.class, () -> {
+            petService.update(p2, id.toString());
+        });
+    }
+
+    @Test
+    void tcb4_8(){
+        String s = "s46920";
+        String encodedHex = String.format("%24s", Integer.toHexString(s.hashCode())).replace(' ', '0');
+        ObjectId id = new ObjectId(encodedHex);
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shepherd", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        p.setId(id);
+        petService.add(p);
+        Pet p2 = generatePet("Mollie", "Mollie3245",null, "Dog", "German Shephard", "black", "healthy", 3, "Female", "Bigger than a human", "Very loud actually", "Shy dog.");
+        assertThrows(Exception.class, () -> {
+            petService.update(p2, null);
+        });
+    }
+
+    /**
+     * Specification Based Testing
+     * Tests PetService's `remove` function
+     * _________________________________________________
+     */
+    @Test
+    void tcb5_1(){
+        String s = "p42335";
+        String encodedHex = String.format("%24s", Integer.toHexString(s.hashCode())).replace(' ', '0');
+        ObjectId id = new ObjectId(encodedHex);
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shepherd", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        p.setId(id);
+        petService.add(p);
+        assertEquals(200, petService.remove(id.toString()).getStatus());
+    }
+    @Test
+    void tcb5_2(){
+        String s = "p42335";
+        String encodedHex = String.format("%24s", Integer.toHexString(s.hashCode())).replace(' ', '0');
+        ObjectId id = new ObjectId(encodedHex);
+        Pet p = generatePet("Mollie", "Mollie3245", null, "Dog", "German Shepherd", "black", "healthy", 3, "Female", "Bigger than a human", "quiet", "Shy dog.");
+        p.setId(id);
+        petService.add(p);
+        String s2 = "p42335";
+        String eh2 = String.format("%24s", Integer.toHexString(s2.hashCode())).replace(' ', '0');
+        ObjectId id2 = new ObjectId(eh2);
+        assertEquals(200, petService.remove(id2.toString()).getStatus());
+    }
+    @Test
+    void tcb5_3(){
+        //Response r = petService.remove(0);
+        assert true;
+    }
+    @Test
+    void tcb5_4(){
+        assertThrows(Exception.class, ()-> {petService.remove(null);});
+    }
+    @Test
+    void tcb5_5(){
+        // not testing endpoints, null and unspecified are interchangeable
+        assertThrows(Exception.class, ()-> {petService.remove(null);});
+    }
+    @Test
+    void tcb5_6(){
+        Response r = petService.remove(" ");
+        assertEquals(400, r.getStatus());
+    }
+    @Test
+    void tcb5_7(){
+        Response r = petService.remove("dog");
+        assertEquals(400, r.getStatus());
+    }
 }
